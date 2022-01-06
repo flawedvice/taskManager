@@ -10,6 +10,7 @@ export const getTasks = async (req: any, res: any) => {
 };
 
 
+
 export const postTask = async (req: any, res: any) => {
     const taskData = req.body;
     const newTask = new TaskModel(taskData);
@@ -24,6 +25,7 @@ export const postTask = async (req: any, res: any) => {
 };
 
 
+
 export const filterTasks = async (req: any, res: any) => {
     const filter: 'title' | 'isCompleted' | 'category' = req.params.filter;
     let value = req.params.value;
@@ -34,4 +36,68 @@ export const filterTasks = async (req: any, res: any) => {
 
     const tasks = await TaskModel.find({ [filter]: value }).exec();
     res.json(tasks)
+};
+
+
+
+export const editTask = async (req: any, res: any) => {
+    const taskId = req.body.id;
+    const modifiedFields = req.body.modifiedFields;
+    const modifiedTask = await TaskModel.findByIdAndUpdate(taskId, modifiedFields);
+
+    if (modifiedTask !== null) {
+
+        await modifiedTask.save()
+            .then(() => {
+                res.json({'message': 'Task updated successfully!'});
+            })
+            .catch( error => {
+                console.log(error);
+                res.json({'message': 'We were unable to modify the task'});
+            });
+    }
+    else {
+        res.json({'message': 'There is no such task'});
+    }
+        
+};
+
+
+
+export const completeTask = async (req: any, res: any) => {
+    const taskId = req.body.id;
+    const task = await TaskModel.findById(taskId);
+    if (task !== null) {
+        let value = !task?.isCompleted;
+        task.isCompleted = value;
+        
+        try {
+            task.save();
+            console.log('Task modified successfully!');
+            res.json({'message': `Task is now ${task.isCompleted ? 'completed!' : 'pending!'}`});
+
+        } catch (error) {
+            console.log(error);
+            res.json({'message': 'We were unable to modify the task'});
+            
+        }
+    }
+    else {
+        res.json({'message': 'There is no such task.'})
+    }
+};
+
+
+
+export const deleteTask = async (req: any, res: any) => {
+    const taskId = req.body.id;
+    await TaskModel.findByIdAndDelete(taskId)
+        .then(() => {
+            console.log('Task deleted successfully!');
+            res.json({'message': 'Task deleted successfully!'});
+        })
+        .catch( error => {
+            console.log(error);
+            res.json({'message': 'We were unable to delete the task :('});
+        })
 };
