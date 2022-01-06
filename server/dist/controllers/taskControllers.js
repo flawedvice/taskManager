@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postTask = exports.getTasks = void 0;
+exports.filterTasks = exports.postTask = exports.getTasks = void 0;
 const TaskModel_1 = require("../models/TaskModel");
 const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const tasks = yield TaskModel_1.TaskModel.find({});
     console.log(tasks);
-    res.send(JSON.stringify(tasks));
+    res.json(tasks);
 });
 exports.getTasks = getTasks;
 const postTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,3 +29,13 @@ const postTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.postTask = postTask;
+const filterTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const filter = req.params.filter;
+    let value = req.params.value;
+    if (filter === 'title' || filter === 'category') {
+        value = new RegExp(`${value}`, 'i');
+    }
+    const tasks = yield TaskModel_1.TaskModel.find({ [filter]: value }).exec();
+    res.json(tasks);
+});
+exports.filterTasks = filterTasks;

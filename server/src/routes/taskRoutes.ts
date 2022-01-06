@@ -1,6 +1,10 @@
 const router = require('express').Router();
 
-import { getTasks, postTask } from '../controllers/taskControllers';
+import { 
+    getTasks,
+    postTask,
+    filterTasks
+} from '../controllers/taskControllers';
 
 
 /* || Main Routes */
@@ -12,6 +16,7 @@ router.get('/tasks', getTasks);
 router.post('/new-task', postTask);
 
 // Filter Tasks
+router.get('/tasks/:filter/:value', filterTasks);
 
 // Edit Task
 

@@ -6,7 +6,7 @@ const TaskSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     description: String,
     isCompleted: { type: Boolean, default: false },
-    category: String,
+    category: { type: String, default: 'none' },
     owner: { type: String, default: 'Anonymous' },
     createdAt: { type: Date, default: new Date() }
 });

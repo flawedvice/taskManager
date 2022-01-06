@@ -8,6 +8,7 @@ router.get('/tasks', taskControllers_1.getTasks);
 // Create task
 router.post('/new-task', taskControllers_1.postTask);
 // Filter Tasks
+router.get('/tasks/:filter/:value', taskControllers_1.filterTasks);
 // Edit Task
 // Complete Task
 // Delete Task
