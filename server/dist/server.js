@@ -13,7 +13,9 @@ const db_1 = require("./config/db");
 const DB_URI = process.env.MONGO_URI;
 (0, db_1.connectDB)(DB_URI);
 // Setting Middlewares
+const cors = require('cors');
 app.use(express.json());
+app.use(cors);
 // Get routes
 const taskRoutes = require('./routes/taskRoutes');
 app.use('/', taskRoutes);
