@@ -11,14 +11,15 @@ export interface Task {
 };
 
 interface SingleTaskProps {
-    task: Task
+    task: Task,
+    onCheck: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 
 const SingleTask = (props: SingleTaskProps) => {
     return (
         <article>
-            <input type="checkbox" />
+            <input type="checkbox" onChange={event => props.onCheck(event)} value={props.task._id}/>
             <h3>{props.task.title}</h3>
         </article>
     );
