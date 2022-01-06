@@ -10,11 +10,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postTask = exports.getTasks = void 0;
+const TaskModel_1 = require("../models/TaskModel");
 const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Getting tasks');
+    const tasks = yield TaskModel_1.TaskModel.find({});
+    console.log(tasks);
+    res.send(JSON.stringify(tasks));
 });
 exports.getTasks = getTasks;
-const postTask = (req, res) => {
-    res.send('Posting task');
-};
+const postTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const taskData = req.body;
+    const newTask = new TaskModel_1.TaskModel(taskData);
+    try {
+        newTask.save();
+        res.json(newTask);
+    }
+    catch (error) {
+        res.send('Couldn\'t create new task');
+    }
+});
 exports.postTask = postTask;

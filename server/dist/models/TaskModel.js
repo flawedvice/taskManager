@@ -5,7 +5,7 @@ const mongoose_1 = require("mongoose");
 const TaskSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     description: String,
-    isCompleted: { type: Boolean, required: true },
+    isCompleted: { type: Boolean, default: false },
     category: String,
     owner: { type: String, default: 'Anonymous' },
     createdAt: { type: Date, default: new Date() }

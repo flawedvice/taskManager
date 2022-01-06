@@ -9,15 +9,20 @@ dotenv.config({ path: '../.env'});
 
 
 // Connect to Database
-// TODO
+import { connectDB } from './config/db';
+const DB_URI = process.env.MONGO_URI;
+connectDB(DB_URI!);
 
 
-const PORT = process.env.PORT;
-console.log(PORT);
+// Setting Middlewares
+app.use(express.json());
 
 
+// Get routes
 const taskRoutes = require('./routes/taskRoutes');
-
 app.use('/', taskRoutes);
 
+
+// Initialize Server
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
