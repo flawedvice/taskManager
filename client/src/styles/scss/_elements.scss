@@ -1,0 +1,24 @@
+@use 'variables';
+@forward 'variables';
+
+#create-input {
+    border: none;
+    border-radius: 1rem 0 0 1rem;
+    width: 60rem;
+    height: variables.$input-height;
+    padding: 0 1rem;
+    font-size: 1.8rem;
+    outline: none;
+}
+
+#create-btn {
+    display: inline-block;
+    border: none;
+    border-radius: 0 1rem 1rem 0;
+    width: 10rem;
+    height: variables.$input-height;
+    background-color: variables.$accent-color;
+    font-size: inherit;
+    font-weight: bold;
+    color: variables.$secondary-color;
+}
