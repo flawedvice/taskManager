@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 
+import CreateTask from './Components/CreateTask';
 import TasksList from './Components/TasksList'
 import { Task } from './Components/SingleTask';
 
@@ -15,6 +16,7 @@ function App() {
     { title: 'second task', isCompleted: false, owner: 'Anonymous', createdAt: new Date()},
     { title: 'third task', isCompleted: false, owner: 'Anonymous', createdAt: new Date()}
   ]);
+  const [ taskInput, setTaskInput ] = useState<string>('task');
 
 
   // Get Tasks List
@@ -43,11 +45,22 @@ function App() {
       return [...left, task, ...right];
     });
   };
+
+  const changeInput = (event: React.FormEvent<HTMLInputElement>): void => {
+    let input = event.currentTarget.value;
+    setTaskInput(input);
+  };
+  const createTask = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    console.log(taskInput);
+    setTaskInput('');
+  };
   
 
   return (
     <main>
       <h1>Hello React!</h1>
+      <CreateTask taskInput={taskInput} onCreate={createTask} onInputChange={changeInput}/>
       <TasksList tasks={tasksList} onCheck={checkTask}/>
     </main>
   );
