@@ -9,7 +9,13 @@ interface CreateTaskProps {
 const CreateTask = (props: CreateTaskProps) => {
     return (
         <form onSubmit={e => props.onCreate(e)}>
-            <input type="text" id="create-input" value={props.taskInput} onChange={e => props.onInputChange(e)}/>
+            <input 
+                type="text" 
+                id="create-input" 
+                value={props.taskInput} 
+                onChange={e => props.onInputChange(e)}
+                autoComplete="off"
+            />
             <button type="submit" id="create-btn">Create</button>
         </form>
     );

@@ -10,6 +10,7 @@ import { Task } from './Components/SingleTask';
 
 function App() {
 
+  
   // Defining States
   const [ tasksList, setTasksList ] = useState<Task[]>([
     { title: 'first task', isCompleted: false, owner: 'Anonymous', createdAt: new Date()},
@@ -17,22 +18,20 @@ function App() {
     { title: 'third task', isCompleted: false, owner: 'Anonymous', createdAt: new Date()}
   ]);
   const [ taskInput, setTaskInput ] = useState<string>('task');
-
-
-  // Get Tasks List
+  
+  // URL for API calls
   const baseUrl = 'http://localhost:8000/tasks';
 
-  useEffect(() => {
+  // Gets every task from server
+  const getTasks = () => {
     axios.get(baseUrl + '/all')
-      .then( async (res) => {
-        console.log(res.data);
+      .then( res => {
         setTasksList(res.data);
       })
       .catch( error => {
         console.log(error);
       });
-  }, []);
-
+  };
 
   // Toggle Tasks completed/pending states
   const checkTask = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -46,16 +45,36 @@ function App() {
     });
   };
 
+  // Changes Input on every keystroke
   const changeInput = (event: React.FormEvent<HTMLInputElement>): void => {
     let input = event.currentTarget.value;
     setTaskInput(input);
   };
-  const createTask = (event: React.FormEvent<HTMLFormElement>): void => {
+
+  // Sends post request to server with new task
+  const createTask = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (taskInput === '') return // Do nothing;
+
     console.log(taskInput);
+
+    axios.post(baseUrl+'/new-task', {
+        title: taskInput,
+        isCompleted: false,
+      })
+      .then(res => console.log(res))
+      .then(getTasks)
+      .catch(err => console.log(err));
     setTaskInput('');
   };
   
+
+  // Get Tasks List
+  useEffect(() => {
+    getTasks();
+  }, []);
+
 
   return (
     <main>
