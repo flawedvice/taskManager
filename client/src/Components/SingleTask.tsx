@@ -21,7 +21,7 @@ const SingleTask = (props: SingleTaskProps) => {
     props.task.isCompleted ? style = "completed" : style = '';
     return (
         <article>
-            <input type="checkbox" id={props.task._id} onChange={event => props.onCheck(event)} value={props.task._id}/>
+            <input type="checkbox" id={props.task._id} onChange={event => props.onCheck(event)} value={props.task._id} checked={props.task.isCompleted}/>
             <label className={style} htmlFor={props.task._id}>{props.task.title}</label>
         </article>
     );

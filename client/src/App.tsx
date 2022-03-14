@@ -18,7 +18,9 @@ function App() {
     { title: 'third task', isCompleted: false, owner: 'Anonymous', createdAt: new Date()}
   ]);
   const [ taskInput, setTaskInput ] = useState<string>('task');
-  
+
+  const patchTasks: string[] = [];
+
   // URL for API calls
   const baseUrl = 'http://localhost:8000/tasks';
 
@@ -33,12 +35,15 @@ function App() {
       });
   };
 
+
   // Toggle Tasks completed/pending states
   const checkTask = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    let task = tasksList.filter( (task: Task) => task._id === event.target.value)[0];
+    let taskId = event.target.value;
+    let task = tasksList.filter( (task: Task) => task._id === taskId)[0];
     const index = tasksList.indexOf(task);
     task.isCompleted = !task.isCompleted;
-    
+    updateTask(taskId);
+
     setTasksList( (prevState): Task[] => {
       let left = prevState.slice(0,index);
       let right = prevState.slice(index+1,);
@@ -68,6 +73,12 @@ function App() {
       .then(getTasks)
       .catch(err => console.log(err));
     setTaskInput('');
+  };
+
+  const updateTask = (taskId: string) => {
+    axios.patch(baseUrl + '/complete-task', {id: taskId})
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
   
 
