@@ -38,6 +38,7 @@ function App() {
     let task = tasksList.filter( (task: Task) => task._id === event.target.value)[0];
     const index = tasksList.indexOf(task);
     task.isCompleted = !task.isCompleted;
+    
     setTasksList( (prevState): Task[] => {
       let left = prevState.slice(0,index);
       let right = prevState.slice(index+1,);

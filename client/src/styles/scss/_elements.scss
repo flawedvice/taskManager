@@ -22,3 +22,8 @@
     font-weight: bold;
     color: variables.$secondary-color;
 }
+
+.completed {
+    color: variables.$dark-secondary-color;
+    text-decoration: line-through;
+}

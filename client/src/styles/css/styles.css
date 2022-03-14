@@ -48,3 +48,8 @@ article {
   font-weight: bold;
   color: #fefefe;
 }
+
+.completed {
+  color: rgba(254, 254, 254, 0.6);
+  text-decoration: line-through;
+}

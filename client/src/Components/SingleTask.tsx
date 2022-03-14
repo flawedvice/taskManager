@@ -17,10 +17,12 @@ interface SingleTaskProps {
 
 
 const SingleTask = (props: SingleTaskProps) => {
+    let style:string;
+    props.task.isCompleted ? style = "completed" : style = '';
     return (
         <article>
-            <input type="checkbox" onChange={event => props.onCheck(event)} value={props.task._id}/>
-            <h3>{props.task.title}</h3>
+            <input type="checkbox" id={props.task._id} onChange={event => props.onCheck(event)} value={props.task._id}/>
+            <label className={style} htmlFor={props.task._id}>{props.task.title}</label>
         </article>
     );
 };
