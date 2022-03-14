@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 // Get Environment Variables
 const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config({ path: '../.env' });
+dotenv_1.default.config();
 // Connect to Database
 const db_1 = require("./config/db");
 const DB_URI = process.env.MONGO_URI;

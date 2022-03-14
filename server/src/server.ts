@@ -5,14 +5,13 @@ const app = express();
 
 // Get Environment Variables
 import dotenv from 'dotenv';
-dotenv.config({ path: '../.env'});
+dotenv.config();
 
 
 // Connect to Database
 import { connectDB } from './config/db';
 const DB_URI = process.env.MONGO_URI;
 connectDB(DB_URI!);
-
 
 // Setting Middlewares
 const cors = require('cors');
