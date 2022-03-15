@@ -20,9 +20,6 @@ function App() {
   const [ taskInput, setTaskInput ] = useState<string>('task');
 
 
-  const updateTasksList: string[] = [];
-
-
   // URL for API calls
   const baseUrl = 'http://localhost:8000/tasks';
 
@@ -46,19 +43,13 @@ function App() {
   };
 
 
-  let calledPatch = false;
   // Toggle Tasks completed/pending states
   const checkTask = (event: React.ChangeEvent<HTMLInputElement>): void => {
     let taskId = event.target.value;
     let task = tasksList.filter( (task: Task) => task._id === taskId)[0];
     const index = tasksList.indexOf(task);
     task.isCompleted = !task.isCompleted;
-    updateTasksList.push(taskId);
-    if (!calledPatch) {
-      updateTasks(updateTasksList);
-      //setTimeout(() => updateTasks(updateTasksList), 2000);
-      calledPatch = true;
-    };
+    completeTask(taskId);
 
 
     // Checks list item
@@ -89,19 +80,23 @@ function App() {
         title: taskInput,
         isCompleted: false,
       })
-      .then(res => console.log(res))
+      .then(res => console.log(res.data.message))
       .then(getTasks)
       .catch(err => console.log(err));
     setTaskInput('');
   };
 
 
-  const updateTasks = (taskIds: string[]) => {
-    axios.patch(baseUrl + '/complete-task', taskIds)
+  const completeTask = (taskId: string) => {
+    console.log(taskId);
+    
+    axios.patch(baseUrl + '/complete-task', {
+      data: {
+        id: taskId
+      }
+    })
         .then(res => {
-          console.log(res);
-          calledPatch = false;
-          getTasks();
+          console.log(res.data.message);
         })
         .catch(err => console.log(err));
   };
@@ -116,7 +111,7 @@ function App() {
       }
     })
       .then(res => {
-        console.log(res)
+        console.log(res.data.message)
         getTasks();
       })
       .catch(err => console.log(err));
