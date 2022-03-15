@@ -19,21 +19,32 @@ function App() {
   ]);
   const [ taskInput, setTaskInput ] = useState<string>('task');
 
+
   const updateTasksList: string[] = [];
+
 
   // URL for API calls
   const baseUrl = 'http://localhost:8000/tasks';
+
 
   // Gets every task from server
   const getTasks = () => {
     axios.get(baseUrl + '/all')
       .then( res => {
-        setTasksList(res.data);
+        let tasks = res.data.sort((a: Task,b: Task) => {
+          let timeA = new Date(a.createdAt).getTime(),
+            timeB = new Date(b.createdAt).getTime();
+          return timeB - timeA;
+        })
+        console.log(tasks);
+        
+        setTasksList(tasks);
       })
       .catch( error => {
         console.log(error);
       });
   };
+
 
   let calledPatch = false;
   // Toggle Tasks completed/pending states
@@ -44,10 +55,13 @@ function App() {
     task.isCompleted = !task.isCompleted;
     updateTasksList.push(taskId);
     if (!calledPatch) {
-      setTimeout(() => updateTasks(updateTasksList), 300);
+      updateTasks(updateTasksList);
+      //setTimeout(() => updateTasks(updateTasksList), 2000);
       calledPatch = true;
     };
 
+
+    // Checks list item
     setTasksList( (prevState): Task[] => {
       let left = prevState.slice(0,index);
       let right = prevState.slice(index+1,);
@@ -55,11 +69,13 @@ function App() {
     });
   };
 
+
   // Changes Input on every keystroke
   const changeInput = (event: React.FormEvent<HTMLInputElement>): void => {
     let input = event.currentTarget.value;
     setTaskInput(input);
   };
+
 
   // Sends post request to server with new task
   const createTask = (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,14 +95,17 @@ function App() {
     setTaskInput('');
   };
 
+
   const updateTasks = (taskIds: string[]) => {
     axios.patch(baseUrl + '/complete-task', taskIds)
         .then(res => {
           console.log(res);
           calledPatch = false;
+          getTasks();
         })
         .catch(err => console.log(err));
   };
+
 
   const deleteTask = (taskId: string) => {
     let task = tasksList.filter( (task: Task) => task._id === taskId)[0];
@@ -96,7 +115,10 @@ function App() {
         id: taskId
       }
     })
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        getTasks();
+      })
       .catch(err => console.log(err));
 
     setTasksList( (prevState): Task[] => {

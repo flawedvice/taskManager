@@ -21,6 +21,10 @@
     font-size: inherit;
     font-weight: bold;
     color: variables.$secondary-color;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .task-list {

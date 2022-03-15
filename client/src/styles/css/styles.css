@@ -48,6 +48,9 @@ article {
   font-weight: bold;
   color: #fefefe;
 }
+#create-btn:hover {
+  cursor: pointer;
+}
 
 .task-list {
   display: block;
