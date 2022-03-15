@@ -23,6 +23,47 @@
     color: variables.$secondary-color;
 }
 
+.task-list {
+    display: block;
+    margin: 2rem;
+    width: 45%;
+}
+
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    margin: .4rem 0;
+    border-radius: .6rem;
+    padding: .4rem 2rem;
+    min-width: 100%;
+
+    .icon {
+        visibility: hidden;
+    }
+
+    &:hover {
+        background-color: variables.$secondary-color;
+        color: variables.$main-color;
+        cursor: pointer;
+
+        .icon {
+            visibility: visible;
+            color: variables.$main-color;
+
+            &:hover {
+                color: variables.$danger;
+            }
+        }
+        .input-group {
+            color: inherit;
+        }
+        .completed {
+            color: variables.$light-main-color;
+        }
+    }
+}
+
 .completed {
     color: variables.$dark-secondary-color;
     text-decoration: line-through;

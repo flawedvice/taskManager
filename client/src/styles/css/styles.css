@@ -49,6 +49,42 @@ article {
   color: #fefefe;
 }
 
+.task-list {
+  display: block;
+  margin: 2rem;
+  width: 45%;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.4rem 0;
+  border-radius: 0.6rem;
+  padding: 0.4rem 2rem;
+  min-width: 100%;
+}
+.task .icon {
+  visibility: hidden;
+}
+.task:hover {
+  background-color: #fefefe;
+  color: #333333;
+  cursor: pointer;
+}
+.task:hover .icon {
+  visibility: visible;
+  color: #333333;
+}
+.task:hover .icon:hover {
+  color: #DB1212;
+}
+.task:hover .input-group {
+  color: inherit;
+}
+.task:hover .completed {
+  color: rgba(51, 51, 51, 0.6);
+}
+
 .completed {
   color: rgba(254, 254, 254, 0.6);
   text-decoration: line-through;

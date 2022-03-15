@@ -19,7 +19,7 @@ function App() {
   ]);
   const [ taskInput, setTaskInput ] = useState<string>('task');
 
-  const patchTasks: string[] = [];
+  const updateTasksList: string[] = [];
 
   // URL for API calls
   const baseUrl = 'http://localhost:8000/tasks';
@@ -35,14 +35,18 @@ function App() {
       });
   };
 
-
+  let calledPatch = false;
   // Toggle Tasks completed/pending states
   const checkTask = (event: React.ChangeEvent<HTMLInputElement>): void => {
     let taskId = event.target.value;
     let task = tasksList.filter( (task: Task) => task._id === taskId)[0];
     const index = tasksList.indexOf(task);
     task.isCompleted = !task.isCompleted;
-    updateTask(taskId);
+    updateTasksList.push(taskId);
+    if (!calledPatch) {
+      setTimeout(() => updateTasks(updateTasksList), 300);
+      calledPatch = true;
+    };
 
     setTasksList( (prevState): Task[] => {
       let left = prevState.slice(0,index);
@@ -75,10 +79,31 @@ function App() {
     setTaskInput('');
   };
 
-  const updateTask = (taskId: string) => {
-    axios.patch(baseUrl + '/complete-task', {id: taskId})
+  const updateTasks = (taskIds: string[]) => {
+    axios.patch(baseUrl + '/complete-task', taskIds)
+        .then(res => {
+          console.log(res);
+          calledPatch = false;
+        })
+        .catch(err => console.log(err));
+  };
+
+  const deleteTask = (taskId: string) => {
+    let task = tasksList.filter( (task: Task) => task._id === taskId)[0];
+    const index = tasksList.indexOf(task);
+    axios.delete(baseUrl + '/remove-task', {
+      data:{
+        id: taskId
+      }
+    })
       .then(res => console.log(res))
       .catch(err => console.log(err));
+
+    setTasksList( (prevState): Task[] => {
+      let left = prevState.slice(0,index);
+      let right = prevState.slice(index+1,);
+      return [...left, task, ...right];
+    });
   };
   
 
@@ -92,7 +117,7 @@ function App() {
     <main>
       <h1>Hello React!</h1>
       <CreateTask taskInput={taskInput} onCreate={createTask} onInputChange={changeInput}/>
-      <TasksList tasks={tasksList} onCheck={checkTask}/>
+      <TasksList tasks={tasksList} onCheck={checkTask} deleteTask={deleteTask}/>
     </main>
   );
 }
