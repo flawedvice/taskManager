@@ -3,7 +3,7 @@ import { Task, TaskModel } from '../models/TaskModel';
 
 
 export const getTasks = async (req: any, res: any) => {
-    const tasks = await TaskModel.find({});
+    const tasks = await TaskModel.find({}).sort('-createdAt');
     console.log(tasks);
     
     res.json(tasks);
@@ -18,6 +18,8 @@ export const postTask = async (req: any, res: any) => {
     try {
         newTask.save();
         res.json(newTask);
+        console.log(newTask);
+        
         
     } catch (error) {
         res.send('Couldn\'t create new task');
@@ -65,7 +67,11 @@ export const editTask = async (req: any, res: any) => {
 
 
 export const completeTask = async (req: any, res: any) => {
-    const taskId = req.body.id;
+    const taskId = req.body.data.id;
+    console.log(req.body);
+    
+    console.log(`Got task Id: ${taskId}`);
+    
     const task = await TaskModel.findById(taskId);
     if (task !== null) {
         let value = !task?.isCompleted;

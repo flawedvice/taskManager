@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTask = exports.completeTask = exports.editTask = exports.filterTasks = exports.postTask = exports.getTasks = void 0;
 const TaskModel_1 = require("../models/TaskModel");
 const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const tasks = yield TaskModel_1.TaskModel.find({});
+    const tasks = yield TaskModel_1.TaskModel.find({}).sort('-createdAt');
     console.log(tasks);
     res.json(tasks);
 });
@@ -23,6 +23,7 @@ const postTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         newTask.save();
         res.json(newTask);
+        console.log(newTask);
     }
     catch (error) {
         res.send('Couldn\'t create new task');
@@ -59,7 +60,9 @@ const editTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.editTask = editTask;
 const completeTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const taskId = req.body.id;
+    const taskId = req.body.data.id;
+    console.log(req.body);
+    console.log(`Got task Id: ${taskId}`);
     const task = yield TaskModel_1.TaskModel.findById(taskId);
     if (task !== null) {
         let value = !(task === null || task === void 0 ? void 0 : task.isCompleted);
